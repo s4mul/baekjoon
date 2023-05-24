@@ -93,7 +93,8 @@ void sudocu(){
             S[xcor][ycor]++;//check value 1 ~ 9
         }
         oldCor.push(xcor*10 + ycor);
-        
+        if(sizeStack <= oldCor.size())//모든 칸을 처리해서 처리된 칸의 크기가 원래 빈칸의 크기와 같을 때 실행을 
+            return;
         if(S[xcor][ycor] == 10){
             S[xcor][ycor] = 0;
             x.push(oldCor.top() / 10);
@@ -103,8 +104,7 @@ void sudocu(){
             y.push(oldCor.top() % 10);
             oldCor.pop();
         }
-        if(sizeStack < x.size() + 1)
-            return;
+        
             
     }
     
