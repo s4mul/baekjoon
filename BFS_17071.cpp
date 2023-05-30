@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include<stdio.h>
 #include <queue> //include stack library
@@ -36,7 +35,7 @@ int calcMyCor(){
     while(1){
         sister_cor = calcSisterCor(sec);
         
-        for(int i = 0; i < 21; i++){
+        /*for(int i = 0; i < 21; i++){
             printf("%d ", visited_map[0][i]);
         }
         printf("\n");
@@ -44,20 +43,20 @@ int calcMyCor(){
             printf("%d ", visited_map[1][i]);
         }
         printf("\n");
-        
+        */
         
         
         for(int i = 0; i < size_depth; i++){//search each depth
             my_cor = buffer.front();
            
-            printf("mycor: %d\n", my_cor);
+            //printf("mycor: %d\n", my_cor);
             buffer.pop();
-            if(my_cor > MAXCOR){//기저_못찾음
+            if(sister_cor > MAXCOR){//기저_못찾음
                 return -1;
             }
             
             sec++;
-            if(my_cor > 0 && visited_map[sec&0][my_cor - 1] == 0){
+            if(my_cor > 0 && visited_map[sec&1][my_cor - 1] == 0){
                 buffer.push(my_cor - 1);
                 visited_map[sec&1][my_cor - 1] = 1;
             }
@@ -73,10 +72,10 @@ int calcMyCor(){
             
             
         }
-        
+        //printf("cor: %d\n",sister_cor);
         if(visited_map[sec&1][sister_cor]){
-            printf("%d\n",sister_cor);
-            printf("%d\n",visited_map[sec&1][sister_cor] );
+            
+            //printf("bis: %d\n",visited_map[sec&1][sister_cor] );
             return sec;
         }
         
