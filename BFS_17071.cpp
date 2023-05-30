@@ -6,13 +6,15 @@ using namespace std;
 
 int sister_start_cor, my_start_cor;
 int calcSisterCor(int sec);// 시작점을 받아서 해당 시간에 대한 동생의 좌표를 계산함
-int calcMyCor(int curent_cor);//이전 단계의 시작점을 받아서 시간(깊이)에서 가능한 나의 위치를 확인함
+int calcMyCor();//시간(깊이)에서 가능한 나의 위치를 확인함
 queue<int> buffer;
+
+int visited_map[500001] = {0};
 
 int main() {
     scanf("%d %d", &my_start_cor, &sister_start_cor);
     
-    printf("%d",calcMyCor(my_start_cor));
+    printf("%d",calcMyCor());
     
 
     return 0;
@@ -25,31 +27,45 @@ int calcSisterCor(int sec){
         return sister_start_cor + sec*(sec + 1)/2;
 }
 // 시작점을 받아서 해당 시간에 대한 동생의 좌표를 계산함
-int calcMyCor(int current_cor){
+int calcMyCor(){
     int sec = 0;
-    int sister_cor, size_depth = 1;
-    buffer.push(current_cor);//시작점
+    int sister_cor, my_cor, size_depth = 1;
+    buffer.push(my_start_cor);//시작점
     
     while(1){
         sister_cor = calcSisterCor(sec);
         
         for(int i = 0; i < size_depth; i++){//search each depth
-            current_cor = buffer.front();
+            my_cor = buffer.front();
+            //printf("mycor: %d\n", my_cor);
             buffer.pop();
             if(sister_cor > MAXCOR){//기저_못찾음
                 return -1;
             }
-            if(sister_cor == current_cor)//기저_찾음
+            if(sister_cor == my_cor)//기저_찾음
                 return sec;
             
             
             
-            if(current_cor > 0)
-                buffer.push(current_cor - 1);
-            buffer.push(current_cor + 1);
-            buffer.push(current_cor * 2);
+            if(my_cor > 0 && visited_map[my_cor - 1] != sec + 1){
+                buffer.push(my_cor - 1);
+                visited_map[my_cor - 1] = sec+ 1;
+            }
+            if(my_cor + 1 <= MAXCOR && visited_map[my_cor + 1] != sec+ 1){
+                buffer.push(my_cor + 1);
+                visited_map[my_cor + 1] = sec+ 1;
+            }
+            if(my_cor * 2 <= MAXCOR && visited_map[my_cor * 2] != sec+ 1){
+                buffer.push(my_cor * 2);
+                visited_map[my_cor * 2] = sec+ 1;
+            }
             
         }
+        
+        /*for(int i = 0; i < 20; i++){
+            printf("%d ", visited_map[i]);
+        }*/
+        //printf("\n");
         sec++;//find all case in same depth, go next depth
         size_depth = buffer.size();//save case size in same depth
     }
