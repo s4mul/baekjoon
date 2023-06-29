@@ -1,4 +1,3 @@
-
 #include <iostream>
 
 
@@ -13,13 +12,14 @@ int main()
     
     scanf("%s", str);
     
-    for(; *p != '\n'; p++){
+    for(; *p != '\0'; p++){
         if('0' <= *p && *p <= '9'){
             num *= 10;
             num += *p - '0';
         }
         if(*p == '+'){
-            if(flag == 1){
+            //printf("1. %d %d\n", num,sum);
+            if(flag){
                 sum -= num;
             }
             else{
@@ -28,17 +28,20 @@ int main()
             num = 0;
         }
         if(*p == '-'){
+            //printf("2. %d %d\n", num, sum);
             if(!flag){
                 sum += num;
                 flag = 1;
             }
             
-            sum -= num;
+            else{
+                sum -= num;
+            }
             num = 0;
         }
-        printf("%d ", sum);
+        
     }
-    
+    //printf("L: %d %d\n", num, sum);
     if(flag){
         sum -= num;
     }
